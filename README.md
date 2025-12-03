@@ -1,4 +1,4 @@
-![CI](https://github.com/jbbaillet85/potion-de-vie/actions/workflows/main.yml/badge.svg)
+![CI](https://github.com/jbbaillet85/potion-de-vie/.github/workflows/ci.yml/badge.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e5003917339469bb682e67badfd5448)](https://app.codacy.com/gh/jbbaillet85/potion-de-vie/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![wakatime](https://wakatime.com/badge/user/648b0556-0c0e-4e9d-b952-2bea950dabe6/project/f409f220-6ae0-4559-81b3-d23cc5f28c80.svg)](https://wakatime.com/badge/user/648b0556-0c0e-4e9d-b952-2bea950dabe6/project/f409f220-6ae0-4559-81b3-d23cc5f28c80)
 
