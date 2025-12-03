@@ -33,7 +33,7 @@ jobs:
 
     - name: Lint with Ruff
       run: |
-        ruff .
+        ruff check .
 
     - name: Type check with Mypy
       run: |
