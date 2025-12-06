@@ -34,12 +34,13 @@ python_files = "tests.py test_*.py *_tests.py"
 # -------------------------
 # RUFF
 # -------------------------
-[tool.ruff]
+[tool.ruff.lint]
 line-length = 88
 select = ["E", "F", "I", "B", "UP"]
-ignore = ["E501"]
+ignore = [
+    "E501",  # lignes longues autorisées
+]
 extend-exclude = ["migrations"]
-
 # -------------------------
 # MYPY
 # -------------------------

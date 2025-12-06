@@ -1,11 +1,13 @@
 repos:
-  # --- Ruff : Linter + Vérification ---
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.7.0
+  # --- Ruff : Linting Python ---
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.14.7
     hooks:
       - id: ruff
-        args: ["--fix"]
-      - id: ruff-format
+        name: ruff-lint
+        additional_dependencies: []
+        args: ["--fix", "."]
+        stages: [commit]
 
   # --- Black : Formatage Python ---
   - repo: https://github.com/psf/black
@@ -40,7 +42,7 @@ repos:
     hooks:
       - id: detect-secrets
 
-  # --- Vérif YAML ---
+  # --- Vérif YAML et fichiers ---
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
