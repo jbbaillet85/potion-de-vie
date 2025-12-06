@@ -1,13 +1,15 @@
 [project]
 name = "potion-de-vie"
 version = "0.1.0"
-description = "Add your description here"
+description = "Application open-source de suivi quotidien des habitudes, objectifs et progrès personnels. Développée avec Django, DRF. Conçue pour offrir un suivi simple, motivant et personnalisable. Projet soutenu par Jean-Yves Ponce."
 readme = "README.md"
 requires-python = ">=3.12"
+
 dependencies = [
     "django>=5.2.9",
     "djangorestframework>=3.16.1",
     "psycopg[binary]>=3.3.1",
+    "python-dotenv>=1.0.1",
 ]
 
 [dependency-groups]
@@ -16,5 +18,59 @@ dev = [
     "mypy>=1.19.0",
     "pre-commit>=4.5.0",
     "pytest>=9.0.1",
+    "pytest-django>=4.9.0",
     "ruff>=0.14.7",
+    "django-stubs>=5.1.1",
+    "djangorestframework-stubs>=3.15.0",
+    "types-python-dotenv",
 ]
+
+# -------------------------
+# PYTEST
+# -------------------------
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = "tests.py test_*.py *_tests.py"
+
+# -------------------------
+# RUFF
+# -------------------------
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I", "B", "UP"]
+ignore = [
+    "E501",  # lignes longues autorisées
+]
+extend-exclude = ["migrations"]
+
+# -------------------------
+# MYPY
+# -------------------------
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+strict = true
+ignore_missing_imports = false
+warn_unused_ignores = true
+exclude = ["migrations"]
+
+# Hug pour dotenv + autres libs dynamiques
+[[tool.mypy.overrides]]
+module = [
+    "dotenv",
+    "python-dotenv",
+]
+ignore_missing_imports = true
+
+# -------------------------
+# DJANGO-STUBS
+# -------------------------
+[tool.django-stubs]
+django_settings_module = "config.settings"
+
+# -------------------------
+# BUILD
+# -------------------------
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
