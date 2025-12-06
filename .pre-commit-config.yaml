@@ -1,32 +1,28 @@
-# .pre-commit-config.yaml
 repos:
-  # --- Ruff : Linter Python ---
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.14.7
     hooks:
       - id: ruff
         name: ruff-lint
+        additional_dependencies: []
         args: ["--fix", "."]
+        stages: [commit]
 
-  # --- Black : Formatage Python ---
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
 
-  # --- Mypy : Typage statique ---
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.0
+    rev: v1.13.0
     hooks:
       - id: mypy
         additional_dependencies:
           - django
           - djangorestframework
-          - django-stubs
-          - djangorestframework-stubs
-          - psycopg[binary]
+          - types-requests
+          - psycopg2-binary
 
-  # --- Pytest (via hook local + uv) ---
   - repo: local
     hooks:
       - id: pytest
@@ -36,13 +32,11 @@ repos:
         types: [python]
         pass_filenames: false
 
-  # --- Interdiction des secrets ---
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
       - id: detect-secrets
 
-  # --- Vérifications YAML/JSON et fin de fichier ---
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
