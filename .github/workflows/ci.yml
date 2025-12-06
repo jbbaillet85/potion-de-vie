@@ -2,52 +2,58 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:16
         env:
           POSTGRES_USER: postgres # pragma: allowlist secret
           POSTGRES_PASSWORD: postgres # pragma: allowlist secret
-          POSTGRES_DB: postgres # pragma: allowlist secret
+          POSTGRES_DB: testdb # pragma: allowlist secret
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     env:
       SQL_ENGINE: django.db.backends.postgresql_psycopg3
-      SQL_DATABASE: postgres # pragma: allowlist secret
+      SQL_DATABASE: testdb # pragma: allowlist secret
       SQL_USER: postgres # pragma: allowlist secret
       SQL_PASSWORD: postgres # pragma: allowlist secret
       SQL_HOST: 127.0.0.1
       SQL_PORT: 5432
+
+      # Variables Django (fausses valeurs → pas de secret)
+      DJANGO_SUPERUSER_USERNAME: "ci_user" # pragma: allowlist secret
+      DJANGO_SUPERUSER_EMAIL: "ci@example.com" # pragma: allowlist secret
+      DJANGO_SUPERUSER_PASSWORD: "not-a-secret-ci-value"  # pragma: allowlist secret
+
       DEBUG: "True"
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install UV
-        run: python -m pip install --upgrade pip uv
+      - name: Install uv
+        run: pip install uv
 
-      - name: Install dependencies
-        run: uv add --dev
+      - name: Sync dependencies with uv
+        run: uv sync
 
       - name: Lint with Ruff
         run: uv run ruff check .
