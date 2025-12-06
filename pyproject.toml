@@ -21,7 +21,7 @@ dev = [
     "pytest-django>=4.9.0",
     "ruff>=0.14.7",
     "django-stubs>=5.1.1",
-    "djangorestframework-stubs>=3.15.0"
+    "djangorestframework-stubs>=3.15.0",
 ]
 
 # -------------------------
@@ -34,13 +34,12 @@ python_files = "tests.py test_*.py *_tests.py"
 # -------------------------
 # RUFF
 # -------------------------
-[tool.ruff.lint]
+[tool.ruff]
 line-length = 88
 select = ["E", "F", "I", "B", "UP"]
-ignore = [
-    "E501",  # lignes longues autorisées
-]
-extend-exclude = ["migrations"]
+ignore = ["E501"]  # lignes longues autorisées
+exclude = ["migrations"]
+
 # -------------------------
 # MYPY
 # -------------------------
@@ -63,12 +62,16 @@ ignore_missing_imports = true
 django_settings_module = "config.settings"
 
 # -------------------------
-# HATCH / BUILD
+# BLACK
+# -------------------------
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+include = '\.pyi?$'
+
+# -------------------------
+# BUILD
 # -------------------------
 # [build-system]
 # requires = ["hatchling"]
 # build-backend = "hatchling.build"
-
-# [tool.hatch.build.targets.wheel]
-# Aucun package à inclure, on utilise uniquement uv pour dev
-# include = []
