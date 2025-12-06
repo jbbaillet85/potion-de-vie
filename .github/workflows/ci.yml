@@ -2,43 +2,64 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  lint-test-build:
+  test:
     runs-on: ubuntu-latest
-
     services:
-      docker:
-        image: docker:20.10.16
-        options: --privileged
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres # pragma: allowlist secret
+          POSTGRES_PASSWORD: postgres # pragma: allowlist secret
+          POSTGRES_DB: postgres # pragma: allowlist secret
         ports:
-          - 2375:2375
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SQL_ENGINE: django.db.backends.postgresql_psycopg3
+      SQL_DATABASE: postgres # pragma: allowlist secret
+      SQL_USER: postgres # pragma: allowlist secret
+      SQL_PASSWORD: postgres # pragma: allowlist secret
+      SQL_HOST: 127.0.0.1
+      SQL_PORT: 5432
+      DEBUG: "True"
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest mypy black ruff docker
+      - name: Install UV
+        run: python -m pip install --upgrade pip uv
 
-    - name: Lint with Ruff
-      run: |
-        ruff check .
+      - name: Install dependencies
+        run: uv add --dev
 
-    - name: Format check with Black
-      run: |
-        black --check .
+      - name: Lint with Ruff
+        run: uv run ruff check .
 
-    - name: Run tests with Pytest
-      run: |
-        pytest --maxfail=5 --disable-warnings -v
+      - name: Format check with Black
+        run: uv run black --check .
+
+      - name: Type check with Mypy
+        run: uv run mypy .
+
+      - name: Run migrations
+        run: uv run python manage.py migrate
+
+      - name: Run tests
+        run: uv run pytest
