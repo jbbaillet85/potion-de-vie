@@ -25,23 +25,24 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # 3. Installer les dépendances dev
+      # 3. Installer UV et les dépendances dev
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ".[dev]"
+          pip install uv
+          uv sync
 
       # 4. Installer pre-commit et lancer tous les hooks
       - name: Run pre-commit hooks
         run: |
-          pre-commit install
-          pre-commit run --all-files
+          uv run pre-commit install
+          uv run pre-commit run --all-files
 
-      # 5. Linter avec Ruff (optionnel si déjà dans pre-commit)
+      # 5. Linter avec Ruff
       - name: Lint with Ruff
-        run: uv run ruff check .
+        run: uv run ruff check . --fix
 
-      # 6. Vérifier le format avec Black (optionnel si déjà dans pre-commit)
+      # 6. Vérifier le format avec Black
       - name: Check code format with Black
         run: uv run black --check .
 
@@ -51,5 +52,5 @@ jobs:
 
       # 8. Vérification des types avec MyPy (optionnel)
       - name: Type check with MyPy
-        if: false # <- mettre true pour activer progressivement
+        if: false
         run: uv run mypy .
