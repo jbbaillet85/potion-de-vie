@@ -37,7 +37,7 @@ line-length = 88
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["E501"]  # lignes longues autorisées
-extend-exclude = ["migrations"]
+exclude = ["migrations"]
 # -------------------------
 # MYPY
 # -------------------------
