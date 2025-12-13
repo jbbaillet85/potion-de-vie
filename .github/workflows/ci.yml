@@ -10,6 +10,21 @@ on:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: potion
+          POSTGRES_PASSWORD: potion
+          POSTGRES_DB: potion
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U potion -d potion"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     strategy:
       matrix:
         python-version: [3.12]
@@ -40,8 +55,10 @@ jobs:
       - name: Check code format with Black
         run: uv run black --check .
 
-      # 6. Lancer les tests Pytest
+      # 6. Lancer les tests Pytest avec DB
       - name: Run tests with Pytest
+        env:
+          DATABASE_URL: postgres://potion:potion@localhost:5432/potion
         run: uv run pytest
 
       # 7. Vérification des types avec MyPy (optionnel)
