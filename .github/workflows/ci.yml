@@ -32,25 +32,19 @@ jobs:
           pip install uv
           uv sync
 
-      # 4. Installer pre-commit et lancer tous les hooks
-      - name: Run pre-commit hooks
-        run: |
-          uv run pre-commit install
-          uv run pre-commit run --all-files
-
-      # 5. Linter avec Ruff
+      # 4. Linter avec Ruff
       - name: Lint with Ruff
         run: uv run ruff check . --fix
 
-      # 6. Vérifier le format avec Black
+      # 5. Vérifier le format avec Black
       - name: Check code format with Black
         run: uv run black --check .
 
-      # 7. Lancer les tests Pytest
+      # 6. Lancer les tests Pytest
       - name: Run tests with Pytest
         run: uv run pytest
 
-      # 8. Vérification des types avec MyPy (optionnel)
+      # 7. Vérification des types avec MyPy (optionnel)
       - name: Type check with MyPy
         if: false
         run: uv run mypy .
