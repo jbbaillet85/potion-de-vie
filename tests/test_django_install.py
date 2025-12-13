@@ -1,7 +1,7 @@
 import django
 
 
-def test_django_installed():
+def test_django_installed() -> None:
     """
     Vérifie que Django est installé et sa version est récupérable.
     """

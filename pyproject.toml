@@ -31,33 +31,33 @@ dev = [
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = "tests.py test_*.py *_tests.py"
 
+# -------------------------
+# RUFF
+# -------------------------
 [tool.ruff]
 line-length = 88
+exclude = ["**/migrations/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["E501"]  # lignes longues autorisées
-exclude = ["migrations"]
+
 # -------------------------
 # MYPY
 # -------------------------
 [tool.mypy]
 python_version = "3.12"
-plugins = ["mypy_django_plugin.main"]
 strict = true
 ignore_missing_imports = false
 warn_unused_ignores = true
 exclude = ["migrations"]
 
+[mypy.plugins.django-stubs]
+django_settings_module = "config.settings"
+
 [[tool.mypy.overrides]]
 module = ["dotenv", "python-dotenv"]
 ignore_missing_imports = true
-
-# -------------------------
-# DJANGO-STUBS
-# -------------------------
-[tool.django-stubs]
-django_settings_module = "config.settings"
 
 # -------------------------
 # BLACK
@@ -68,7 +68,7 @@ target-version = ["py312"]
 include = '\.pyi?$'
 
 # -------------------------
-# BUILD
+# BUILD (optionnel)
 # -------------------------
 # [build-system]
 # requires = ["hatchling"]
