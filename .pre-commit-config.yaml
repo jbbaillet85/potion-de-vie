@@ -28,7 +28,8 @@ repos:
         entry: uv run pytest
         language: system
         types: [python]
-
+        pass_filenames: false
+        always_run: true
   # -------------------------
   # MyPy (type checking, optionnel)
   # -------------------------

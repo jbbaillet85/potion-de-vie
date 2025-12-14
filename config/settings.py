@@ -88,9 +88,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ========================
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get(
-            "SQL_ENGINE", "django.db.backends.postgresql_psycopg3"
-        ),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
         "NAME": os.environ.get("SQL_DATABASE", "potion"),
         "USER": os.environ.get("SQL_USER", "potion"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "potion"),
