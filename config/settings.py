@@ -21,9 +21,8 @@ load_dotenv(dotenv_path=BASE_DIR / ".env")
 # ========================
 # SECRET KEY / DEBUG
 # ========================
-SECRET_KEY = os.environ.get("SECRET_KEY", default="dev-secret-key-for-local")
-DEBUG = os.environ.get("DEBUG", True)
-
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-for-local")
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
 
 # ========================
@@ -40,12 +39,18 @@ DJANGO_APPS = [
     "django.contrib.sites",
 ]
 
-# THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+]
 
-# LOCAL_APPS = [
-#    "apps",]
+LOCAL_APPS = [
+    "apps.home",
+    "apps.user",
+]
 
-INSTALLED_APPS = DJANGO_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # ========================
 # MIDDLEWARE
@@ -56,11 +61,13 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # ========================
 # TEMPLATES
@@ -81,8 +88,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
-
 # ========================
 # DATABASE
 # ========================
@@ -100,9 +105,20 @@ DATABASES = {
 # ========================
 # AUTH / ACCOUNTS
 # ========================
-# AUTH_USER_MODEL = "apps.User"
-# AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+AUTH_USER_MODEL = "user.User"
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+LOGIN_REDIRECT_URL = "/home/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_USERNAME_REQUIRED = True
+
 DJANGO_SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+
 # ========================
 # STATIC
 # ========================
@@ -134,11 +150,10 @@ LOGGING = {
 # AUTRES
 # ========================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+SITE_ID = 1
 
 filterwarnings(
     "ignore",
     "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated.",
 )
 FORMS_URLFIELD_ASSUME_HTTPS = True
-
-SITE_ID = 1

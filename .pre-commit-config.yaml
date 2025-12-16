@@ -18,7 +18,25 @@ repos:
       - id: black
         language_version: python3.12
 
+
   # -------------------------
+  # MyPy (type checking, optionnel)
+  # -------------------------
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - django-stubs
+          - djangorestframework-stubs
+          - python-dotenv
+          - psycopg
+          - django-allauth
+        args: ["--ignore-missing-imports"]
+        name: mypy (type check)
+        language_version: python3.12
+        stages: [commit]
+ # -------------------------
   # Pytest (tests)
   # -------------------------
   - repo: local
@@ -30,17 +48,3 @@ repos:
         types: [python]
         pass_filenames: false
         always_run: true
-  # -------------------------
-  # MyPy (type checking, optionnel)
-  # -------------------------
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.0
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - django-stubs
-          - djangorestframework-stubs
-        args: ["--ignore-missing-imports"]
-        name: mypy (type check)
-        language_version: python3.12
-        stages: [commit]
