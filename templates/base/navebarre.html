@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container px-5">
+        <a class="navbar-brand" href="{% url 'homepage' %}">Potion de vie</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'compte' %}">Compte {{ user.email }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Déconnexion</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contribution' %}">Contribuer au projet</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">S'enregistrer</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">S'identifier</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

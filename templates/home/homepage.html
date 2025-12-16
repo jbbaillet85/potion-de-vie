@@ -1,0 +1,140 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title_h1 %}Potion de vie{% endblock %}
+{% block title_h2 %}C'est parti{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Ma potion de vie</h3>
+
+<!-- Streak -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">🔥 Ma chaîne</h5>
+    <p>Aujourd’hui, cela fait <strong>{{ streak_days|default:"0" }}</strong> jours consécutifs que je valide ma checklist.</p>
+  </div>
+</div>
+
+<!-- Objectifs -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">🎯 Mes objectifs</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Objectif du jour</label>
+        <input type="text" name="objectif_jour" class="form-control" placeholder="Objectif du jour">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Objectif de la semaine</label>
+        <input type="text" name="objectif_semaine" class="form-control" placeholder="Objectif de la semaine">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Objectif à long terme</label>
+        <textarea name="objectif_long_terme" class="form-control" rows="2"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+<!-- Récompenses -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">🎁 Mes récompenses</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4">
+          <label>30 jours</label>
+          <input type="text" name="reward_30" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <label>100 jours</label>
+          <input type="text" name="reward_100" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <label>365 jours</label>
+          <input type="text" name="reward_365" class="form-control">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+<!-- Checklist quotidienne -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">✅ Checklist du jour (3 minimum)</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="objectif_done"> Objectif du jour accompli</div>
+      <div class="mb-2">
+        <input type="text" name="learned" class="form-control" placeholder="J'ai appris quelque chose de nouveau">
+      </div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="relations"> Pris soin de mes relations</div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="sport"> Activité physique</div>
+      <div class="mb-2">
+        <label>3 nouvelles idées</label>
+        <input type="text" name="idea1" class="form-control mb-1">
+        <input type="text" name="idea2" class="form-control mb-1">
+        <input type="text" name="idea3" class="form-control">
+      </div>
+      <div class="mb-2">
+        <input type="number" name="pages" class="form-control" placeholder="Pages lues">
+      </div>
+      <div class="mb-2">
+        <input type="text" name="deep_work" class="form-control" placeholder="25 minutes de travail sur…">
+      </div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="habit_done"> Habitude tenue</div>
+      <button type="submit" class="btn btn-success mt-3">Valider la journée</button>
+    </form>
+  </div>
+</div>
+
+<!-- Nouvelle habitude -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">🌱 Ma nouvelle habitude</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label>Habitude à instaurer</label>
+        <input type="text" name="habit_title" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label>Moment exact (après quelle habitude existante)</label>
+        <input type="text" name="habit_trigger" class="form-control">
+      </div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="easy"> Facile (-5 minutes)</div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="inspiring"> Inspirante</div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" name="well_placed"> Bien placée dans la journée</div>
+      <button type="submit" class="btn btn-primary mt-3">Enregistrer l'habitude</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Content section 1-->
+{% block presentation %}
+<section id="scroll">
+  <div class="container px-5">
+    <div class="row gx-5 align-items-center">
+      <div class="col-lg-7 order-lg-1">
+        <div class="p-5">
+          <h2 class="display-4">Potion de vie</h2>
+          <p>Potion de Vie est une application visant à aider chacun à installer durablement de nouvelles habitudes positives grâce à :</p>
+          <ul>
+            <li>une checklist quotidienne,</li>
+            <li>un système de chaînes (days streak),</li>
+            <li>le suivi des objectifs du jour, de la semaine et à long terme,</li>
+            <li>un espace dédié à la création d’une nouvelle habitude,</li>
+            <li>des récompenses (30 j, 100 j, 365 j).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
